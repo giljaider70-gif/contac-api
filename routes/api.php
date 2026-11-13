@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ContactController;
 
 Route::prefix('v1')->group(function () {
     Route::get('/health', function () {
@@ -10,4 +11,6 @@ Route::prefix('v1')->group(function () {
             'version' => '0.1.0',
         ]);
     })->name('health');
+
+    Route::apiResource('contacts', ContactController::class);
 });
