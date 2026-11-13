@@ -36,3 +36,16 @@ test('devuelve 404 para un contacto ajeno', function () {
     $this->getJson("/api/v1/contacts/{$contact->id}")
         ->assertNotFound();
 });
+
+test('no crea un contacto sin teléfono', function () {
+    $user = User::factory()->create();
+    Sanctum::actingAs($user);
+
+    $this->postJson('/api/v1/contacts', [
+        'name' => 'Jaider Gil',
+    ])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['phone']);
+
+    $this->assertDatabaseCount('contacts', 0);
+});
